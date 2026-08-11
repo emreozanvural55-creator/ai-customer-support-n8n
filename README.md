@@ -54,3 +54,56 @@ AI output:
   "requires_human": true,
   "summary": "The customer is very angry because their product has not arrived for five days."
 }
+
+
+## How It Works
+
+The workflow receives customer support requests through a webhook and processes them using Google Gemini.
+
+### 1. Webhook
+Receives customer information:
+
+- Name
+- Email
+- Message
+
+### 2. Information Extraction
+
+Google Gemini analyzes the customer's message and extracts structured information:
+
+- Category
+- Priority
+- Sentiment
+- Human support requirement
+- Summary
+
+### 3. Supabase
+
+The analyzed support ticket is automatically stored in a Supabase database.
+
+### 4. Human Escalation
+
+The workflow checks whether human support is required.
+
+If `requires_human` is `true`, an automatic email notification is sent to the support team through Gmail.
+
+If `requires_human` is `false`, no escalation email is sent.
+
+## Example Workflow
+
+```text
+Customer Request
+       ↓
+    Webhook
+       ↓
+  Edit Fields
+       ↓
+Google Gemini AI
+       ↓
+ Supabase Database
+       ↓
+  Human Required?
+     ↙       ↘
+   YES        NO
+    ↓          ↓
+  Gmail      End
